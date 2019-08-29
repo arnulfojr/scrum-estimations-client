@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  server:
+    image: estimations-client
+    build:
+      context: .
+      target: Dev
+      dockerfile: Dockerfile
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+    network_mode: bridge
+    volumes:
+      - ./src/:/home/node/app/src/
+      - ./public/:/home/node/app/public/
+      - ./package.json:/home/node/app/package.json
+      - ./package-lock.json:/home/node/app/package-lock.json
+      - ./vue.config.js:/home/node/app/vue.config.js
+      - ./babel.config.js:/home/node/app/babel.config.js
