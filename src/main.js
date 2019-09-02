@@ -4,8 +4,14 @@ import router from "./router";
 
 // plugins
 import AuthPlugin from "./plugins/auth";
+import BootstrapVue from "bootstrap-vue";
+
+// styles
+import "./assets/custom.scss";
 
 Vue.use(AuthPlugin);
+
+Vue.use(BootstrapVue);
 
 Vue.config.productionTip = false;
 

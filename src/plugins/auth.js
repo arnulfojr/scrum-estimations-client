@@ -1,4 +1,4 @@
-import authService from "@/auth/AuthService";
+import authService from "@/services/AuthService";
 
 export default {
   install(Vue) {

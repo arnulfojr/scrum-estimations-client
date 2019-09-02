@@ -1,13 +1,14 @@
 import Vue from "vue";
 import Router from "vue-router";
+
 // views
 import Home from "./views/Home.vue";
-import Profile from "./views/Profile";
 
 // components
 import Callback from "./components/Callback.vue";
+
 // services
-import authService from "./auth/AuthService";
+import authService from "./services/AuthService";
 
 Vue.use(Router);
 
@@ -18,14 +19,6 @@ const routes = [
     component: Home
   },
   {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ "./views/About.vue")
-  },
-  {
     path: "/callback",
     name: "callback",
     component: Callback
@@ -33,7 +26,10 @@ const routes = [
   {
     path: "/profile",
     name: "profile",
-    component: Profile
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "profile" */ "./views/Profile")
   }
 ];
 

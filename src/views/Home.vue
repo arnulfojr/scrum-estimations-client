@@ -1,18 +1,24 @@
 <template>
   <div class="home">
+    <!-- replace image with the Coount von Count from Sesame Street  -->
     <img alt="Vue logo" src="../assets/logo.png" />
-    <AuthButtons></AuthButtons>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import AuthButtons from "@/components/AuthButtons";
-
 export default {
   name: "home",
-  components: {
-    AuthButtons
+  data() {
+    return {
+      isAuthenticated: false,
+      profile: null
+    };
+  },
+  methods: {
+    handleLoginEvent(data) {
+      this.isAuthenticated = data.loggedIn;
+      this.profile = data.profile;
+    }
   }
 };
 </script>

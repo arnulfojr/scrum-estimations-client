@@ -7,6 +7,9 @@ services:
       context: .
       target: Dev
       dockerfile: Dockerfile
+    env_file:
+      - ./service.env
+      - ./.env.local
     expose:
       - 8080
     ports:
@@ -19,3 +22,5 @@ services:
       - ./package-lock.json:/home/node/app/package-lock.json
       - ./vue.config.js:/home/node/app/vue.config.js
       - ./babel.config.js:/home/node/app/babel.config.js
+      - ./service.env:/home/node/app/service.env
+      - ./.env.local:/home/node/app/.env.local

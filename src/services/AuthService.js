@@ -19,16 +19,13 @@ const localStorageKey = "loggedIn";
 const loginEvent = "loginEvent";
 
 class AuthService extends EventEmitter {
-  idToke = null;
+  idToken = null;
   profile = null;
   tokenExpiry = null;
 
   accessToken = null;
   accessTokenExpiry = null;
 
-  /**
-   * Initiate the user login flow
-   */
   login(customState) {
     webAuth.authorize({ appState: customState });
   }
@@ -56,12 +53,13 @@ class AuthService extends EventEmitter {
   localLogin(authResult) {
     this.idToken = authResult.idToken;
     this.profile = authResult.idTokenPayload;
+
     // convert the JWT expiry time from seconds to milliseconds
     this.tokenExpiry = new Date(this.profile.exp * 1000);
 
     // save the access token
     this.accessToken = authResult.accessToken;
-    this.accessTokenExpiry = new Date(Date.now() + authResult.expiredIn * 1000);
+    this.accessTokenExpiry = new Date(Date.now() + authResult.expiresIn * 1000);
 
     localStorage.setItem(localStorageKey, "true");
 
@@ -77,7 +75,7 @@ class AuthService extends EventEmitter {
    */
   renewTokens() {
     return new Promise((resolve, reject) => {
-      const isUserLoggedIn = localStorage.getItem(this.localStorage);
+      const isUserLoggedIn = localStorage.getItem(localStorageKey);
       if (isUserLoggedIn !== "true") {
         return reject("Not logged in");
       }
@@ -99,6 +97,8 @@ class AuthService extends EventEmitter {
     this.idToken = null;
     this.tokenExpiry = null;
     this.profile = null;
+    this.accessToken = null;
+    this.accessTokenExpiry = null;
 
     webAuth.logout({
       returnTo: window.location.origin

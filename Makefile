@@ -1,5 +1,5 @@
 build:
-	@docker-compose build --no-cache server
+	@docker-compose build server
 .PHONY: build
 
 run:

@@ -1,16 +1,18 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">My Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link v-if="isAuthenticated" to="/profile">Profile</router-link>
-    </div>
+    <navigation-bar></navigation-bar>
     <router-view />
   </div>
 </template>
 
 <script>
+// @ is an alias to /src
+import NavigationBar from "@/components/NavigationBar";
+
 export default {
+  components: {
+    NavigationBar
+  },
   data() {
     return {
       isAuthenticated: false
