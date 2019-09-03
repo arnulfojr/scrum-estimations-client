@@ -24,12 +24,9 @@ const routes = [
     component: Callback
   },
   {
-    path: "/profile",
-    name: "profile",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "profile" */ "./views/Profile")
+    path: "/organization",
+    name: "organization",
+    component: () => import(/* webpackChunkName: "organizatio" */ "./views/Organization")
   }
 ];
 

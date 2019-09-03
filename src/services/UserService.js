@@ -74,6 +74,19 @@ class UserService {
 
     return R.path(["data"], response);
   }
+
+  async getUserOrganization(userId, options = {}) {
+    options = this.addAccessToken(options);
+
+    let response;
+    try {
+      response = await this.http.get(`/users/${userId}/organization`)
+    } catch (error) {
+      return null;
+    }
+
+    return R.pathOr(null, ["data"], response);
+  }
 }
 
 const httpClient = axios.create({
