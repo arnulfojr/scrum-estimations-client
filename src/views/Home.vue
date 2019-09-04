@@ -1,11 +1,20 @@
 <template>
   <div class="home">
     <!-- replace image with the Coount von Count from Sesame Street  -->
-    <img alt="Vue logo" src="../assets/logo.png" />
+    <img
+      alt="Vue logo"
+      src="../assets/count-von-count.png"
+      class="count-von-count"
+    />
     <p v-if="user">Welcome {{ user.name }}!</p>
     <p v-else>Welcome anonymous!</p>
-    <p v-if="organization">You're part of the "{{ organization.name }}" organization!</p>
+    <p v-if="organization">
+      You're part of the "{{ organization.name }}" organization!
+    </p>
     <p v-else>Let's get you started by joining or creating an organization!</p>
+    <router-link v-if="!organization" to="/organization" tag="b-button"
+      >Manage my organization</router-link
+    >
   </div>
 </template>
 
@@ -22,15 +31,9 @@ export default {
   },
   computed: {
     ...mapState({
-      user: 'user',
-      organization: 'organization'
+      user: "user",
+      organization: "organization"
     })
-  },
-  created() {
-    // redirect to org section until we have an organization
-    if (this.$store.state.organization === null) {
-      this.$router.push("/organization");
-    }
   },
   methods: {
     handleLoginEvent(data) {
@@ -40,3 +43,9 @@ export default {
   }
 };
 </script>
+
+<style>
+.count-von-count {
+  max-height: 33vw;
+}
+</style>

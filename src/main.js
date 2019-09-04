@@ -9,7 +9,7 @@ import BootstrapVue from "bootstrap-vue";
 // styles
 import "./assets/custom.scss";
 
-import store from './store'
+import store from "./store";
 
 Vue.use(AuthPlugin);
 

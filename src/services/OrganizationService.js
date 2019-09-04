@@ -3,10 +3,9 @@ import * as R from "ramda";
 import utils from "@/utils";
 
 class OrganizationService {
-
   accessToken = null;
 
-  constructor (http) {
+  constructor(http) {
     this.http = http;
   }
 
@@ -22,7 +21,7 @@ class OrganizationService {
     return options;
   }
 
-  async all(hint = '', options = {}) {
+  async all(hint = "", options = {}) {
     options = this.addAccessToken(options);
 
     options["params"] = {
@@ -46,7 +45,7 @@ class OrganizationService {
     try {
       response = await this.http.post("/organizations/", data, options);
     } catch (error) {
-      throw error;
+      throw error.response;
     }
 
     return R.path(["data"], response);
@@ -66,9 +65,10 @@ class OrganizationService {
       response = await this.http.post(
         `/organizations/${organizationId}/users`,
         data,
-        options);
+        options
+      );
     } catch (error) {
-      throw error;
+      throw error.response;
     }
 
     return R.path(["data"], response);
@@ -80,7 +80,8 @@ class OrganizationService {
     try {
       await this.http.delete(
         `/organizations/${organizationId}/users/${userId}`,
-        options);
+        options
+      );
     } catch (error) {
       return false;
     }

@@ -80,7 +80,7 @@ class UserService {
 
     let response;
     try {
-      response = await this.http.get(`/users/${userId}/organization`)
+      response = await this.http.get(`/users/${userId}/organization`, options);
     } catch (error) {
       return null;
     }

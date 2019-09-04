@@ -26,7 +26,22 @@ const routes = [
   {
     path: "/organization",
     name: "organization",
-    component: () => import(/* webpackChunkName: "organizatio" */ "./views/Organization")
+    component: () =>
+      import(/* webpackChunkName: "organization" */ "./views/Organization")
+  },
+  {
+    path: "/sequences",
+    name: "sequences",
+    component: () =>
+      import(/* webpackChunkName: "sequences" */ "./views/Sequences")
+  },
+  {
+    path: "/sequences/create",
+    name: "sequenceFormular",
+    component: () =>
+      import(
+        /* webpackChunkName: "sequenceFormular" */ "./views/SequenceFormular"
+      )
   }
 ];
 

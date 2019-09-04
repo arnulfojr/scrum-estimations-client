@@ -8,13 +8,16 @@
             <b-card no-body>
               <h4 slot="header">My organization</h4>
               <b-card-body>
-                <b-card-text>
-                  Name: {{ organization.name }}
-                </b-card-text>
-                <b-button size="sm" variant="danger" @click="leaveOrganization">Leave</b-button>
+                <b-card-text> Name: {{ organization.name }} </b-card-text>
+                <b-button size="sm" variant="danger" @click="leaveOrganization"
+                  >Leave</b-button
+                >
               </b-card-body>
               <b-list-group flush>
-                <b-list-group-item v-for="user in organization.users" v-bind:key="user.id">
+                <b-list-group-item
+                  v-for="user in organization.users"
+                  v-bind:key="user.id"
+                >
                   {{ user.email }}
                 </b-list-group-item>
               </b-list-group>
@@ -37,7 +40,7 @@ export default {
     OrganizationForm
   },
   computed: {
-    ...mapState(["organization", "user", "accessToken"]),
+    ...mapState(["organization", "user", "accessToken"])
   },
   methods: {
     async leaveOrganization() {
@@ -47,10 +50,12 @@ export default {
 
       try {
         await organizationService.leave(organizationId, userId);
-      } catch (error) {/* ignore */}
+      } catch (error) {
+        /* ignore */
+      }
 
-      this.$store.commit('SET_ORGANIZATION', null);
+      this.$store.commit("SET_ORGANIZATION", null);
     }
   }
-}
+};
 </script>

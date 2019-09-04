@@ -7,8 +7,18 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <router-link tag="b-nav-item" to="/organization" v-if="isAuthenticated">
+          <router-link
+            tag="b-nav-item"
+            to="/organization"
+            v-if="isAuthenticated"
+          >
             Organization
+          </router-link>
+        </b-navbar-nav>
+
+        <b-navbar-nav>
+          <router-link tag="b-nav-item" to="/sequences" v-if="isAuthenticated">
+            Sequences
           </router-link>
         </b-navbar-nav>
 
