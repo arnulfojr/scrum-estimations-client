@@ -69,7 +69,7 @@ class UserService {
     try {
       response = await this.http.post("/users/", data, options);
     } catch (error) {
-      throw error;
+      throw R.pathOr(error, ["response"], error);
     }
 
     return R.path(["data"], response);
