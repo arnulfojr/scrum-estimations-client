@@ -6,7 +6,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import NavigationBar from "@/components/NavigationBar";
 
 export default {

@@ -42,6 +42,12 @@ const routes = [
       import(
         /* webpackChunkName: "sequenceFormular" */ "./views/SequenceFormular"
       )
+  },
+  {
+    path: "/sessions",
+    name: "sessions",
+    component: () =>
+      import(/* webpackChunkName: "sessions" */ "./views/Sessions")
   }
 ];
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pt-1">
     <sequence-form></sequence-form>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-container class="my-5">
+    <b-container>
       <b-row class="mt-3">
         <b-col>
           <b-alert variant="danger" :show="errored">{{ errorMessage }}</b-alert>
@@ -122,7 +122,6 @@
 
 <script>
 import * as R from "ramda";
-import sequenceService from "@/services/SequenceService";
 
 export default {
   data() {
@@ -196,28 +195,12 @@ export default {
       this.sequence.values = filteredValues;
     },
     async submitForm() {
-      sequenceService.accessToken = await this.$auth.getAccessToken();
-
       try {
-        await sequenceService.create(this.sequence.name);
+        await this.$store.dispatch("sequences/create", this.sequence);
       } catch (error) {
         this.errored = true;
         this.errorMessage = R.pathOr(
           "Unknown error while creating the sequence, will try adding the values.",
-          ["data", "message"],
-          error
-        );
-      }
-
-      try {
-        await sequenceService.addValuesTo(
-          this.sequence.name,
-          this.sequence.values
-        );
-      } catch (error) {
-        this.errored = true;
-        this.errorMessage = R.pathOr(
-          "Unknown error while relating the values to the sequence.",
           ["data", "message"],
           error
         );

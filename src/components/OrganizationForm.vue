@@ -85,7 +85,6 @@
 <script>
 import { mapState } from "vuex";
 import * as R from "ramda";
-import organizationService from "@/services/OrganizationService";
 
 export default {
   data() {
@@ -102,83 +101,47 @@ export default {
       return !!this.name;
     },
     ...mapState({
-      user: "user",
-      accessToken: "accessToken"
+      user: "user"
     })
   },
   methods: {
     async searchOrganizations() {
-      organizationService.accessToken = this.accessToken;
-
-      this.organizations = await organizationService.all(this.nameHint);
+      this.organizations = await this.$store.dispatch(
+        "organizations/search",
+        this.nameHint
+      );
       await this.$nextTick();
     },
     async createOrganization() {
       this.errored = false;
-      organizationService.accessToken = this.accessToken;
 
       const data = {
-        name: this.name
+        organization: {
+          name: this.name
+        },
+        user: this.user
       };
 
-      let organization;
       try {
-        organization = await organizationService.create(data);
+        await this.$store.dispatch("organizations/create", data);
       } catch (error) {
         this.errored = true;
         this.errorMessage = R.path(["data"], error);
-        return;
       }
-
-      // join the user to the organization
-      const organizationId = R.path(["id"], organization);
-      const userId = R.path(["id"], this.user);
-      if (!organizationId || !userId) {
-        this.errored = true;
-        this.errorMessage = `The organization or the user were unexpectedly undefined: ${organizationId} - ${userId}`;
-        return;
-      }
-
-      let jointResponse;
-      try {
-        jointResponse = await organizationService.addUserTo(
-          organizationId,
-          userId
-        );
-      } catch (error) {
-        this.errored = true;
-        this.errorMessage = R.path(["data", "message"], error);
-        return;
-      }
-
-      organization = R.pathOr(organization, ["organization"], jointResponse);
-      const user = R.pathOr(this.user, ["user"], jointResponse);
-
-      this.$store.commit("SET_ORGANIZATION", organization);
-      this.$store.commit("SET_USER", user);
     },
     async joinOrganization(organization) {
-      const organizationId = R.path(["id"], organization);
-      const userId = R.path(["id"], this.user);
+      const data = {
+        organization,
+        user: this.user
+      };
 
-      let jointResponse;
       try {
-        jointResponse = await organizationService.addUserTo(
-          organizationId,
-          userId
-        );
+        await this.$store.dispatch("organizations/join", data);
       } catch (error) {
         this.errored = true;
         const data = R.path(["data"], error);
         this.errorMessage = `The organization was created but we failed to add the user to it... ${data}`;
-        return;
       }
-
-      organization = R.pathOr(organization, ["organization"], jointResponse);
-      const user = R.pathOr(this.user, ["user"], jointResponse);
-
-      this.$store.commit("SET_ORGANIZATION", organization);
-      this.$store.commit("SET_USER", user);
     }
   }
 };

@@ -22,6 +22,12 @@
           </router-link>
         </b-navbar-nav>
 
+        <b-navbar-nav>
+          <router-link tag="b-nav-item" to="/sessions" v-if="isAuthenticated">
+            Sessions
+          </router-link>
+        </b-navbar-nav>
+
         <b-navbar-nav class="ml-auto">
           <b-button v-if="!isAuthenticated" size="sm" @click="doLogin">
             Login

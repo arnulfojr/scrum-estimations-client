@@ -31,7 +31,9 @@ export default {
   },
   computed: {
     ...mapState({
-      user: "user",
+      user: "user"
+    }),
+    ...mapState("organizations", {
       organization: "organization"
     })
   },

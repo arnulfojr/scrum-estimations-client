@@ -66,7 +66,7 @@ export default {
       } catch (error) {
         /* ignore */
       } finally {
-        this.$store.commit("SET_ORGANIZATION", organization);
+        this.$store.commit("organizations/SET_ORGANIZATION", organization);
       }
 
       this.loading = false;

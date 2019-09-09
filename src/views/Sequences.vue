@@ -7,7 +7,7 @@
         </b-col>
       </b-row>
       <b-row>
-        <b-col class="mt-3" lg="5">
+        <b-col class="mt-3">
           <b-card no-body>
             <h4 slot="header">Sequences available</h4>
             <b-card-body>
@@ -36,7 +36,7 @@
           </b-card>
         </b-col>
 
-        <b-col v-if="selectedSequence" class="mt-3" lg="7">
+        <b-col v-if="selectedSequence !== null" class="mt-3">
           <b-card no-body>
             <h4 slot="header">{{ selectedSequence.name }}</h4>
             <b-list-group>
@@ -69,56 +69,31 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import * as R from "ramda";
-import sequenceService from "@/services/SequenceService";
+import { createNamespacedHelpers } from "vuex";
+
+const { mapState } = createNamespacedHelpers("sequences");
 
 export default {
   data() {
     return {
       errored: false,
-      errorMessage: "",
-      selectedSequence: null
+      errorMessage: ""
     };
   },
   computed: {
-    ...mapState(["sequences"])
+    ...mapState(["sequences", "selectedSequence"])
   },
   async created() {
-    sequenceService.accessToken = await this.$auth.getAccessToken();
-
-    let sequences;
     try {
-      sequences = await sequenceService.all();
+      await this.$store.dispatch("sequences/fetchAll");
     } catch (error) {
       this.errored = true;
       this.errorMessage = error;
-      sequences = [];
-    } finally {
-      for (const seq of sequences) {
-        seq.active = false;
-      }
-
-      this.$store.commit("SET_SEQUENCES", sequences);
     }
   },
   methods: {
-    setActive(sequence) {
-      for (const seq of this.sequences) {
-        seq.active = false;
-      }
-
-      sequence.active = true;
-    },
     showSequenceInfoFor(sequence) {
-      this.setActive(sequence);
-
-      const selectedSequenceId = R.path(["selectedSequence", "id"], this);
-      if (selectedSequenceId && selectedSequenceId === sequence.id) {
-        this.selectedSequence = null;
-      } else {
-        this.selectedSequence = sequence;
-      }
+      this.$store.commit("sequences/SET_SELECTED_SEQUENCE", sequence);
     }
   }
 };
