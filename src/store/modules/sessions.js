@@ -18,6 +18,18 @@ const actions = {
     commit("SET_SESSIONS", sessions);
 
     return sessions;
+  },
+  async create({ dispatch }, { name, organization, sequence }) {
+    const accessToken = await dispatch("auth/setAccessToken", null, {
+      root: true
+    });
+    sessionService.accessToken = accessToken;
+
+    try {
+      return sessionService.create(name, sequence, organization);
+    } catch (error) {
+      throw R.pathOr(error, ["data"], error);
+    }
   }
 };
 

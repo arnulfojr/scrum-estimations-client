@@ -56,8 +56,19 @@ export default {
     ...mapState("sequences", ["sequences"]),
     ...mapState("organizations", ["organization"])
   },
+  created() {
+    return this.$store.dispatch("sequences/fetchAll");
+  },
   methods: {
-    createSession() {}
+    createSession() {
+      const data = {
+        name: this.name,
+        sequence: this.sequence,
+        organization: this.organization
+      };
+
+      this.$store.dispatch("sessions/create", data);
+    }
   }
 };
 </script>
