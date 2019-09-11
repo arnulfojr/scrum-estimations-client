@@ -68,14 +68,14 @@ const actions = {
     });
     userService.accessToken = accessToken;
 
-    let organization;
+    let organization = null;
     try {
       organization = await userService.getUserOrganization(userId);
     } catch (error) {
       /* ignore */
-    } finally {
-      return organization;
     }
+
+    return organization;
   }
 };
 
