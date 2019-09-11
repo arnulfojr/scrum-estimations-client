@@ -89,7 +89,8 @@ export default {
     };
   },
   computed: {
-    ...mapState(["sessions", "organization"])
+    ...mapState("sessions", ["sessions"]),
+    ...mapState("organizations", ["organization"])
   },
   mounted() {
     if (R.isNil(this.sessions) || R.isEmpty(this.sessions)) {
@@ -101,16 +102,10 @@ export default {
   async created() {
     sessionService.accessToken = await this.$auth.getAccessToken();
 
-    const orgId = R.path(["organization", "id"], this);
-
-    let sessions;
-    try {
-      sessions = await sessionService.sessionFromOrganization(orgId);
-    } catch (error) {
-      /* TODO: show error */
-    }
-
-    this.$store.commit("SET_ORGANIZATION_SESSIONS", sessions);
+    const organizationId = R.path(["organization", "id"], this);
+    await this.$store.dispatch("sessions/fetchForOrganization", {
+      organizationId
+    });
   },
   methods: {
     goToSession(session) {

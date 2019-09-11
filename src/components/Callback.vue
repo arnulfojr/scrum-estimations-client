@@ -23,7 +23,6 @@
 
 <script>
 import * as R from "ramda";
-import userService from "@/services/UserService";
 
 export default {
   data() {
@@ -38,36 +37,35 @@ export default {
       const email = R.path(["profile", "email"], data);
       const name = R.path(["profile", "name"], data);
 
-      const accessToken = await this.$auth.getAccessToken();
-      userService.accessToken = accessToken;
-
-      this.$store.commit("SET_ACCESS_TOKEN", accessToken);
-
-      let userId = await userService.exists(email);
-
       let user;
-      if (!userId) {
-        try {
-          user = await userService.create(email, name);
-        } catch (error) {
-          this.loading = false;
-          this.errored = true;
-          this.errorMessage = R.path(["data", "message"], error);
-          return;
-        }
-      } else {
-        user = await userService.get(userId);
-      }
-      this.$store.commit("SET_USER", user);
-
-      let organization = null;
       try {
-        organization = await userService.getUserOrganization(userId);
+        user = await this.$store.dispatch("users/ensureUser", {
+          email,
+          name
+        });
       } catch (error) {
-        /* ignore */
-      } finally {
-        this.$store.commit("organizations/SET_ORGANIZATION", organization);
+        this.loading = false;
+        this.errored = true;
+        this.errorMessage = R.pathOr(
+          "Error while creating user.",
+          ["message"],
+          error
+        );
+        return;
       }
+
+      const userId = R.path(["id"], user);
+
+      let organization;
+      try {
+        organization = await this.$store.dispatch("users/getOrganization", {
+          userId
+        });
+      } catch (ignore) {
+        /* ignore */
+      }
+
+      this.$store.commit("organizations/SET_ORGANIZATION", organization);
 
       this.loading = false;
       this.errored = false;
@@ -78,6 +76,7 @@ export default {
   },
   async created() {
     this.loading = true;
+
     try {
       await this.$auth.handleAuthentication();
     } catch (error) {

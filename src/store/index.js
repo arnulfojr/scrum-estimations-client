@@ -6,23 +6,22 @@ import mutations from "./mutations";
 import actions from "./actions";
 
 // modules
-import sequences from "./modules/sequences";
+import auth from "./modules/auth";
 import organizations from "./modules/organizations";
+import sequences from "./modules/sequences";
+import sessions from "./modules/sessions";
+import users from "./modules/users";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-    accessToken: null,
-    organization: null,
-    selectedSequence: null,
-    sequences: [],
-    sessions: [],
-    user: null
-  },
+  state: {},
   modules: {
+    auth,
     organizations,
-    sequences
+    sequences,
+    sessions,
+    users
   },
   mutations,
   actions

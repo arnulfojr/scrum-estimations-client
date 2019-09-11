@@ -100,9 +100,7 @@ export default {
     validation() {
       return !!this.name;
     },
-    ...mapState({
-      user: "user"
-    })
+    ...mapState("users", ["user"])
   },
   methods: {
     async searchOrganizations() {

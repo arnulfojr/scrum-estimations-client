@@ -30,7 +30,7 @@ export default {
     };
   },
   computed: {
-    ...mapState({
+    ...mapState("users", {
       user: "user"
     }),
     ...mapState("organizations", {

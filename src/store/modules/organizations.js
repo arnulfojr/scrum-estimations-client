@@ -3,7 +3,9 @@ import organizationService from "@/services/OrganizationService";
 
 const actions = {
   async create({ commit, dispatch }, { organization, user = null }) {
-    const accessToken = await dispatch("setAccessToken", null, { root: true });
+    const accessToken = await dispatch("auth/setAccessToken", null, {
+      root: true
+    });
     organizationService.accessToken = accessToken;
 
     const org = await organizationService.create(organization);
@@ -20,7 +22,9 @@ const actions = {
   },
 
   async join({ commit, dispatch }, { organization, user }) {
-    const accessToken = await dispatch("setAccessToken", null, { root: true });
+    const accessToken = await dispatch("auth/setAccessToken", null, {
+      root: true
+    });
     organizationService.accessToken = accessToken;
 
     const organizationId = R.path(["id"], organization);
@@ -42,7 +46,9 @@ const actions = {
   },
 
   async leave({ commit, dispatch }, { organization, user }) {
-    const accessToken = await dispatch("setAccessToken", null, { root: true });
+    const accessToken = await dispatch("auth/setAccessToken", null, {
+      root: true
+    });
     organizationService.accessToken = accessToken;
 
     const organizationId = R.path(["id"], organization);
@@ -53,7 +59,9 @@ const actions = {
   },
 
   async search({ dispatch }, nameHint) {
-    const accessToken = await dispatch("setAccessToken", null, { root: true });
+    const accessToken = await dispatch("auth/setAccessToken", null, {
+      root: true
+    });
     organizationService.accessToken = accessToken;
 
     const organizations = await organizationService.all(nameHint);

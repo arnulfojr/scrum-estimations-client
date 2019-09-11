@@ -3,7 +3,9 @@ import sequenceService from "@/services/SequenceService";
 
 const actions = {
   async fetchAll({ dispatch, commit, state }) {
-    const accessToken = await dispatch("setAccessToken", null, { root: true });
+    const accessToken = await dispatch("auth/setAccessToken", null, {
+      root: true
+    });
     sequenceService.accessToken = accessToken;
 
     let sequences = await sequenceService.all();
@@ -22,7 +24,9 @@ const actions = {
     return sequences;
   },
   async create({ dispatch }, { name, values = [] }) {
-    const accessToken = await dispatch("setAccessToken", null, { root: true });
+    const accessToken = await dispatch("auth/setAccessToken", null, {
+      root: true
+    });
     sequenceService.accessToken = accessToken;
 
     await sequenceService.create(name);
@@ -35,7 +39,9 @@ const actions = {
     }
   },
   async assignValuesTo({ dispatch }, { name, values = [] }) {
-    const accessToken = await dispatch("setAccessToken", null, { root: true });
+    const accessToken = await dispatch("auth/setAccessToken", null, {
+      root: true
+    });
     sequenceService.accessToken = accessToken;
 
     await sequenceService.addValuesTo(name, values);

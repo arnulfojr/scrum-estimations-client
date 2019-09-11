@@ -34,7 +34,7 @@ export default {
     ...mapState("organizations", {
       organization: state => state.organization
     }),
-    ...mapState(["user"])
+    ...mapState("users", ["user"])
   },
   methods: {
     async leaveOrganization() {

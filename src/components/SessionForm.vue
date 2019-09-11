@@ -53,7 +53,8 @@ export default {
         };
       });
     },
-    ...mapState(["sequences", "organization"])
+    ...mapState("sequences", ["sequences"]),
+    ...mapState("organizations", ["organization"])
   },
   methods: {
     createSession() {}
