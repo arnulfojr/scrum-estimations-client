@@ -6,4 +6,4 @@ steps:
     image: node:12-alpine
     commands:
       - npm install
-      - npm run-script lint
+      - ./node_modules/.bin/vue-cli-service lint --no-fix
