@@ -2,6 +2,13 @@
   <b-container>
     <b-row>
       <b-col>
+        <b-alert v-model="errored" variant="danger">
+          {{ errorMessage }}
+        </b-alert>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
         <b-form>
           <b-form-group
             id="input-group-name"
@@ -35,11 +42,14 @@
 </template>
 
 <script>
+import * as R from "ramda";
 import { mapState } from "vuex";
 
 export default {
   data() {
     return {
+      errorMessage: "",
+      errored: false,
       name: "",
       sequence: {}
     };
@@ -56,18 +66,41 @@ export default {
     ...mapState("sequences", ["sequences"]),
     ...mapState("organizations", ["organization"])
   },
-  created() {
-    return this.$store.dispatch("sequences/fetchAll");
+  async created() {
+    try {
+      await this.$store.dispatch("sequences/fetchAll");
+    } catch (error) {
+      this.errored = true;
+      this.errorMessage = R.pathOr(error, ["message"], error);
+    }
   },
   methods: {
-    createSession() {
+    async createSession() {
       const data = {
         name: this.name,
         sequence: this.sequence,
         organization: this.organization
       };
 
-      this.$store.dispatch("sessions/create", data);
+      try {
+        await this.$store.dispatch("sessions/create", data);
+      } catch (error) {
+        this.errored = true;
+        this.errorMessage = R.pathOr(
+          "Error while trying to create the session, please try again later",
+          ["message"],
+          error
+        );
+        return;
+      } finally {
+        // let it load once it finishes, no need to await it
+        this.$store.dispatch("sessions/fetchForOrganization", {
+          organizationId: R.path(["organization", "id"], this)
+        });
+      }
+
+      this.name = "";
+      this.sequence = {};
     }
   }
 };

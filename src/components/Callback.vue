@@ -56,7 +56,7 @@ export default {
 
       const userId = R.path(["id"], user);
 
-      let organization;
+      let organization = null;
       try {
         organization = await this.$store.dispatch("users/getOrganization", {
           userId

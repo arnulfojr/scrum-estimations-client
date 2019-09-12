@@ -18,7 +18,11 @@
                 Active sessions for the organization or create a session.
               </b-card-text>
               <b-button @click="toggleForm" variant="primary">
-                Create session
+                {{
+                  showForm
+                    ? "Nevermind, I'll join an existing one"
+                    : "Create session"
+                }}
               </b-button>
             </b-card-body>
             <session-list></session-list>

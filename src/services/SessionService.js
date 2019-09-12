@@ -24,10 +24,16 @@ class SessionService {
   async create(name, sequence, organization, options = {}) {
     options = this.addAccessToken(options);
 
+    const organizationId = R.path(["id"], organization);
+    const sequenceName = R.path(["name"], sequence);
     const data = {
       name,
-      organization,
-      sequence
+      organization: {
+        id: organizationId
+      },
+      sequence: {
+        name: sequenceName
+      }
     };
 
     let response;
@@ -56,6 +62,59 @@ class SessionService {
     let response;
     try {
       response = await this.http.get(`/estimations/sessions/`, options);
+    } catch (error) {
+      throw R.pathOr(error, ["response"], error);
+    }
+
+    return R.path(["data"], response);
+  }
+
+  async join(session, user, options = {}) {
+    const userId = R.path(["id"], user);
+    if (R.isEmpty(userId)) {
+      throw new Error("Please provide a valid/non-empty user ID");
+    }
+
+    const sessionId = R.path(["id"], session);
+
+    options = this.addAccessToken(options);
+
+    const data = {
+      user: {
+        id: userId
+      }
+    };
+
+    let response;
+    try {
+      response = await this.http.put(
+        `/estimations/sessions/${sessionId}/members/`,
+        data,
+        options
+      );
+    } catch (error) {
+      throw R.pathOr(error, ["response"], error);
+    }
+
+    return R.path(["data"], response);
+  }
+
+  async leave(session, user, options = {}) {
+    const userId = R.path(["id"], user);
+    if (R.isEmpty(userId)) {
+      throw new Error("Please provide a valid/non-empty user ID");
+    }
+
+    const sessionId = R.path(["id"], session);
+
+    options = this.addAccessToken(options);
+
+    let response;
+    try {
+      response = await this.http.delete(
+        `/estimations/sessions/${sessionId}/members/${userId}`,
+        options
+      );
     } catch (error) {
       throw R.pathOr(error, ["response"], error);
     }

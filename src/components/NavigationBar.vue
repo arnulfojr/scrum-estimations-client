@@ -50,7 +50,7 @@ export default {
   },
   async created() {
     try {
-      await this.$auth.renewTokens();
+      await this.$store.dispatch("auth/renewTokens");
     } catch (e) {
       /* ignore */
     }

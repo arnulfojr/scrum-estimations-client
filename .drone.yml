@@ -1,0 +1,9 @@
+kind: pipeline
+name: default
+
+steps:
+  - name: Lint
+    image: node:12-alpine
+    commands:
+      - npm install --only=dev
+      - npm run-script lint

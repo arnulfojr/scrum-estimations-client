@@ -11,6 +11,9 @@ const actions = {
 
     commit("SET_ACCESS_TOKEN", accessToken);
     return accessToken;
+  },
+  async renewTokens() {
+    return authService.renewTokens();
   }
 };
 

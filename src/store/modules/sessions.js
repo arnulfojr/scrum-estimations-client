@@ -1,4 +1,5 @@
 // sessions module
+import * as R from "ramda";
 import sessionService from "@/services/SessionService";
 
 const actions = {
@@ -30,6 +31,46 @@ const actions = {
     } catch (error) {
       throw R.pathOr(error, ["data"], error);
     }
+  },
+  async join({ dispatch }, { session, user, organization }) {
+    const accessToken = await dispatch("auth/setAccessToken", null, {
+      root: true
+    });
+    sessionService.accessToken = accessToken;
+
+    let response;
+    try {
+      response = await sessionService.join(session, user);
+    } catch (error) {
+      throw R.pathOr(error, ["data"], error);
+    }
+
+    const organizationId = R.path(["id"], organization);
+    await dispatch("fetchForOrganization", {
+      organizationId
+    });
+
+    return R.path(["data"], response);
+  },
+  async leave({ dispatch }, { session, user, organization }) {
+    const accessToken = await dispatch("auth/setAccessToken", null, {
+      root: true
+    });
+    sessionService.accessToken = accessToken;
+
+    let response;
+    try {
+      response = await sessionService.leave(session, user);
+    } catch (error) {
+      throw R.pathOr(error, ["data"], error);
+    }
+
+    const organizationId = R.path(["id"], organization);
+    await dispatch("fetchForOrganization", {
+      organizationId
+    });
+
+    return R.path(["data"], response);
   }
 };
 
