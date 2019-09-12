@@ -5,5 +5,5 @@ steps:
   - name: Lint
     image: node:12-alpine
     commands:
-      - npm install --only=dev
+      - npm install
       - npm run-script lint
